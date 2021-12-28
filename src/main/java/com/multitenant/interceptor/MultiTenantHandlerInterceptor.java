@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -15,7 +16,7 @@ import java.util.TreeMap;
 
 
 @Component
-public class MultiTenantHandlerInterceptor extends HandlerInterceptorAdapter {
+public class MultiTenantHandlerInterceptor implements HandlerInterceptor {
     @Autowired
     private TenantHolder tenantHolder;
 

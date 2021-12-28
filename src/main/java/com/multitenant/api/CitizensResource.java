@@ -2,6 +2,7 @@ package com.multitenant.api;
 
 import com.multitenant.entity.Citizen;
 import com.multitenant.entity.CitizenRepository;
+import com.multitenant.entity.Planet;
 import com.multitenant.entity.PlanetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +33,21 @@ public class CitizensResource {
     @GetMapping("{planetName}/list")
     public List<Citizen> getCitizen(@PathVariable String planetName) {
         return citizenRepository.findAll();
+    }
+
+
+
+    @PostMapping("tenant/{tenantName}/save")
+    public Planet newTenant(@PathVariable String tenantName) {
+        if(!planetIsPresent(tenantName)) {
+            Planet pl = new Planet();
+            pl.setName(tenantName);
+            return planetnRepository.save(pl);
+        }
+        throw new RuntimeException("The planet does not exist, in shared DB run mongo command to generate entry: use shared; db.planet.insert({_id: \""+tenantName+"\"});");
+    }
+
+    private boolean tenantIsPresent(String tenantName) {
+        return planetnRepository.findById(tenantName).isPresent();
     }
 }
